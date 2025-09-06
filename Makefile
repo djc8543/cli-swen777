@@ -58,6 +58,9 @@ install-reqs:
 	@echo $(H1)Installing HTTPie$(H1END)
 	$(VENV_PIP) install --upgrade --editable .
 
+	@echo $(H1)Installing radon$(H1END)
+	$(VENV_PIP) install --upgrade radon
+
 	@echo
 
 

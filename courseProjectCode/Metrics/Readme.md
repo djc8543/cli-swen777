@@ -1,4 +1,4 @@
-# Setup and Running Testability Metrics
+# Setup and Running Maintainability Metrics
 
 ## Setup Instructions
 
@@ -9,7 +9,7 @@
 
 2. Install dependencies and setup environment
 
-    - make
+    - make all
 
     The above command will:
     - Create a virtual environment inside ./venv
@@ -31,6 +31,16 @@
     - Generate a coverage report
     - Output the total number of test cases and test suites
 
-![](report.png)
+![](testability_report.png)
 
+5. Run the code structure metrics script
 
+    - ./structure.sh
+
+    The above command will:
+
+    - Scan the repository for source lines of code, comments, and cyclomatic complexity
+    - Calculates comment density (per-repo, not per-file) and average cyclomatic complexity
+    - Output the SLOC, Comments, Comment Density, and Average Cyclomatic Complexity
+
+![](structure_report.png)
