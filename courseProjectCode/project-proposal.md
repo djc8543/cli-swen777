@@ -33,9 +33,9 @@ The following report summarizes this team’s findings pertaining to quality att
   This low average cyclomatic complexity, which Radon rates an A, indicates a straight-forward control structure. As a result, functions should be easy to test and maintain, while also benefitting from reduced risk of bugs and ease of refactoring.
 
 4. Testing Quality  
-* *Total number of tests \= 410*  
-* *Test coverage \= 95%*  
-  For a simple CLI tool, which is not meant for critical operations, this is a strong showing in terms of testing. The high coverage percentage indicates an extensive suite of tests that cover nearly all the functionality that HHTPie provides.  
+* *Total number of tests \= 1028*  
+* *Test coverage \= 91%*  
+  For a simple CLI tool, which is not meant for critical operations, this is a strong showing in terms of testing. The high coverage percentage and large number of individual tests indicates an extensive suite of testing that covers nearly all the functionality that HHTPie provides.  
     
 5. Conclusion  
    Overall, HTTPie’s codebase showcases impressive quality attributes across the areas we are focusing on. We see manageable file sizes with low complexity, a control structure that keeps the codebase maintainable, scalable, and modifiable, and a testing suite that encompasses nearly all the possible functionalities being provided to users. Our only critique would be that the comment density is well below industry averages, which can range anywhere from 15%-25%, depending on the source. This leaves a solid opportunity for our team to come in and improve inline documentation in an effort to shore up the one apparent gap in HTTPie’s code quality, improving the development experience for those who come after.
