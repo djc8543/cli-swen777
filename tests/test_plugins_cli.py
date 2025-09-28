@@ -1,5 +1,5 @@
 import pytest
-
+from httpie.plugins import base
 from httpie.status import ExitStatus
 from tests.utils.plugins_cli import parse_listing
 
@@ -153,3 +153,8 @@ def test_broken_plugins(httpie_plugins, httpie_plugins_success, dummy_plugin, br
     # No warning now, since it is uninstalled.
     data = parse_listing(httpie_plugins_success('list'))
     assert len(data) == 1
+    
+def test_auth_plugin_get_auth_raises():
+    plugin = base.AuthPlugin()
+    with pytest.raises(NotImplementedError): #dont implement the interface, this fails
+        plugin.get_auth("user", "pass")
