@@ -12,7 +12,7 @@ Fifteen new unit tests have been added, encompassing missed coverage in utils.py
 |output/ui/man_pages.py|Low coverage|16|0|0%|100%|
 |compat.py|Low coverage|31|24|45%|57%|
 
-To reproduce these results, follow the steps found in [this testing instructions file](/courseProjectCode/Metrics/README.md). This will run all tests and generate a report that will verify the information above. For quick comparison, you can compare results from the [old coverage report](/courseProjectDocs/Setup/Statement_coverage_report.png) against the [new coverage report](/courseProjectDocs/Unit-Testing/updated_coverage_report.png). Please see below for detailed information for all fifteen new unit tests included with this update.
+To reproduce these results, follow the steps found in [this testing instructions file](/courseProjectCode/Metrics/Readme.md). This will run all tests and generate a report that will verify the information above. For quick comparison, you can compare results from the [old coverage report](/courseProjectDocs/Setup/Statement_coverage_report.png) against the [new coverage report](/courseProjectDocs/Unit-Testing/updated_coverage_report.png). Please see below for detailed information for all fifteen new unit tests included with this update.
 
 ## test_utils.py
 
