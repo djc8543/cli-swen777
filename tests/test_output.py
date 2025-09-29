@@ -1,7 +1,7 @@
 import argparse
 from pathlib import Path
 from unittest import mock
-
+from httpie.output.ui.palette import ColorString, _StyledGenericColor, GenericColor
 import json
 import os
 import io
@@ -629,3 +629,15 @@ def test_response_mime_overwrite_incorrect():
     # The provided Content-Type is simply ignored, and so no formatting is done.
     r = http('--response-mime=incorrect/type', DUMMY_URL)
     assert XML_DATA_RAW in r
+
+#46-50 in palette.py
+def test_colorstring_or_styled_generic_color():
+    base = ColorString("BOLD")
+    color = GenericColor(GenericColor.AQUA)
+    styled = _StyledGenericColor(color, styles=["ITALIC"])
+
+    result = base | styled #takes the base color and sytles it twice, making it a styled generic color
+
+    assert isinstance(result, _StyledGenericColor)
+    assert "BOLD" in result.styles
+    assert "ITALIC" in result.styles #check all styles
