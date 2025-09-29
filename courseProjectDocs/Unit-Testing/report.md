@@ -2,13 +2,13 @@
 
 ## Summary
 
-Fifteen new unit tests have been added, encompassing missed coverage in utils.py, plugins/base.py, output/ui/palette.py, output/ui/man_pages.py, and compat.py. This addition has improved overall code coverage by 1% and covered an additional 23 statements. The team decided to focus on these files due to their lower overall coverage compared or uncovered edge cases, then determined which tests to implement based on their potential impacts to the system. Below is a more detailed view of the coverage improvement on a per-file basis:
+Fifteen new unit tests have been added, encompassing missed coverage in utils.py, plugins/base.py, output/ui/palette.py, output/ui/man_pages.py, and compat.py. This addition has improved overall code coverage by 1% and covered an additional 38 statements. The team decided to focus on these files due to their lower overall coverage compared or uncovered edge cases, then determined which tests to implement based on their potential impacts to the system. Below is a more detailed view of the coverage improvement on a per-file basis:
 
 |**File**|**Rationale**|**Missing Statements Before**|**Missing Statements After**|**Coverage Before**|**Coverage After**|
 |---|---|--:|--:|--:|--:|
-|utils.py|Uncovered edge cases|4|4|97%|97%|
-|plugins/base.py|Uncovered edge cases|3|3|92%|92%|
-|output/ui/palette.py|Uncovered edge cases|6|6|92%|92%|
+|utils.py|Uncovered edge cases|15|4|84%|97%|
+|plugins/base.py|Uncovered edge cases|4|3|89%|92%|
+|output/ui/palette.py|Uncovered edge cases|9|6|88%|92%|
 |output/ui/man_pages.py|Low coverage|16|0|0%|100%|
 |compat.py|Low coverage|31|24|45%|57%|
 
