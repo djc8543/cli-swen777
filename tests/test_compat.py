@@ -94,7 +94,7 @@ def test_get_dist_name_package_not_found():
         assert get_dist_name(mock_entry) is None
 
 
-def test_default_certs_load_manual_mock():
+def test_default_certs_load():
     """ensure_default_certs_loaded calls load_default_certs if no CA certs"""
 
     # manually mocking an ssl context
@@ -110,7 +110,7 @@ def test_default_certs_load_manual_mock():
     ensure_default_certs_loaded(context)
     assert context.called
 
-def test_default_certs_load_skipped_true_mock():
+def test_default_certs_load_skipped():
     """load_default_certs should not be called if CA certs exist"""
     
     mock_ssl = MagicMock()
