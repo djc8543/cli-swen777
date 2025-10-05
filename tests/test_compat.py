@@ -1,6 +1,7 @@
 #import re
 import types
 import pytest
+from httpie.compat import importlib_metadata 
 from httpie.compat import cached_property, find_entry_points, get_dist_name, ensure_default_certs_loaded
 from unittest.mock import MagicMock, patch
 
