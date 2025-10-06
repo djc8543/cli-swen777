@@ -10,7 +10,7 @@ Eight new unit tests have been added, while two previous unit tests have been in
 |output/ui/rich_utils.py|Mockable|18|5|0%|72%|
 |compat.py|Mockable|24|22|57%|61%|
 
-To reproduce these results, follow the steps found in [this testing instructions file](/courseProjectCode/Metrics/Readme.md). This will run all tests and generate a report that will verify the information above. For quick comparison, you can compare results between the [initial coverage report](/courseProjectDocs/Setup/Statement_coverage_report.png), the [unit testing coverage report](/courseProjectDocs/Unit-Testing/updated_coverage_report.png), and the [mocking testing coverage report](mocking_coverage_report.png). Please see below for more information on all mocked unit tests added or detailed with this update.
+To reproduce these results, follow the steps found in [this testing instructions file](/courseProjectCode/Metrics/Readme.md). This will run all tests and generate a report that will verify the information above. For quick comparison, you can compare results between the [initial coverage report](/courseProjectDocs/Setup/Statement_coverage_report.png), the [unit testing coverage report](/courseProjectDocs/Unit-Testing/updated_coverage_report.png), and the [mocking testing coverage report](/courseProjectDocs/Unit-Testing/mocking_coverage_report.png). Please see below for more information on all mocked unit tests added or detailed with this update.
 
 
 ## test_writer.py
