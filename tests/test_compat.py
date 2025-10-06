@@ -1,7 +1,9 @@
 #import re
 import types
 import pytest
+from httpie.compat import importlib_metadata 
 from httpie.compat import cached_property, find_entry_points, get_dist_name, ensure_default_certs_loaded
+from unittest.mock import MagicMock, patch
 
 
 def test_cached_property_conflicts():
@@ -78,12 +80,24 @@ def test_get_dist_name(monkeypatch):
 
     assert get_dist_name(EPWithoutDist()) == "new_dist_who_dis"
 
+def test_get_dist_name_package_not_found():
+    """get_dist_name handles missing package metadata"""
+
+    mock_entry = MagicMock()
+    mock_entry.dist = None
+    mock_entry.value = "ignored"
+    mock_entry.pattern.match.return_value = MagicMock(
+        group = lambda key: "nonexistent.module" if key == "module" else None
+    )
+
+    with patch("httpie.compat.importlib_metadata.metadata", side_effect=importlib_metadata.PackageNotFoundError):
+        assert get_dist_name(mock_entry) is None
 
 
 def test_default_certs_load():
     """ensure_default_certs_loaded calls load_default_certs if no CA certs"""
 
-    # mocking an ssl context
+    # manually mocking an ssl context
     class FakeSSL:
         def get_ca_certs(self):
             return []
@@ -95,3 +109,11 @@ def test_default_certs_load():
     context.called = False
     ensure_default_certs_loaded(context)
     assert context.called
+
+def test_default_certs_load_skipped():
+    """load_default_certs should not be called if CA certs exist"""
+    
+    mock_ssl = MagicMock()
+    mock_ssl.get_ca_certs.return_value = ["Anu-phone-who-bis?"]
+    ensure_default_certs_loaded(mock_ssl)
+    mock_ssl.load_default_certs.assert_not_called()
