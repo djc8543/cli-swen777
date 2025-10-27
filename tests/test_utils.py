@@ -4,6 +4,7 @@ import base64
 import os
 import tempfile
 from pathlib import Path
+from httpie.utils import url_as_host
 
 
 #utils.py line 305-306
@@ -35,3 +36,14 @@ def test_open_with_lockfile_file_exists_error(tmp_path):
             pass
 
     lockfile.unlink()
+
+
+def test_split_cookies_raises_if_regex_is_none():
+    result = utils.split_cookies("foo=bar, name1=name2")
+    assert result == ["foo=bar", "name1=name2"]
+    
+def test_url_as_host_strips_userinfo_basic():
+    assert url_as_host("http://user:pw@example.com") == "example.com"
+
+def test_url_as_host_uses_last_segment_when_multiple_ats_in_userinfo():
+    assert url_as_host("http://u@v@example.com:8080/path") == "example.com:8080"
