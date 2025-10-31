@@ -196,34 +196,40 @@ class Session(BaseConfigDict):
             )
 
         return data
+    
+    def _check_header_skip(self, name: str, value: str) -> bool:
+        if value is None:
+            return True  # Ignore explicitly unset headers
+           
+        if name.lower() == 'user-agent' and value.startswith('HTTPie/'):
+            return True
+          
+        if any(name.lower().startswith(prefix.lower() for prefix in SESSION_IGNORED_HEADER_PREFIXES)):
+            return True 
+        
+        return False
+    
+    def _process_cookie_header(self, name: str, value: str, request_headers: HTTPHeadersDict) -> None:
+        for cookie_name, morsel in SimpleCookie(value).items():
+            if not morsel['path']:
+                morsel['path'] = DEFAULT_COOKIE_PATH
+            self.cookie_jar.set(cookie_name, morsel)
+        request_headers.remove_item(name, value)
 
     def _compute_new_headers(self, request_headers: HTTPHeadersDict) -> HTTPHeadersDict:
         new_headers = HTTPHeadersDict()
         for name, value in request_headers.copy().items():
-            if value is None:
-                continue  # Ignore explicitly unset headers
+            if self._check_header_skip(name, value):
+                continue
 
-            original_value = value
             if type(value) is not str:
                 value = value.decode()
 
-            if name.lower() == 'user-agent' and value.startswith('HTTPie/'):
-                continue
-
             if name.lower() == 'cookie':
-                for cookie_name, morsel in SimpleCookie(value).items():
-                    if not morsel['path']:
-                        morsel['path'] = DEFAULT_COOKIE_PATH
-                    self.cookie_jar.set(cookie_name, morsel)
-
-                request_headers.remove_item(name, original_value)
+                self._process_cookie_header(name, value, request_headers)
                 continue
-
-            for prefix in SESSION_IGNORED_HEADER_PREFIXES:
-                if name.lower().startswith(prefix.lower()):
-                    break
-            else:
-                new_headers.add(name, value)
+            
+            new_headers.add(name, value)
 
         return new_headers
 
