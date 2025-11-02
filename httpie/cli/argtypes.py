@@ -3,7 +3,7 @@ import getpass
 import os
 import sys
 from copy import deepcopy
-from typing import List, Optional, Union
+from typing import List, Optional, Union, Tuple
 
 from .constants import DEFAULT_FORMAT_OPTIONS, SEPARATOR_CREDENTIALS
 from ..sessions import VALID_SESSION_NAME_PATTERN
@@ -199,65 +199,58 @@ def readable_file_arg(filename):
         raise argparse.ArgumentTypeError(f'{ex.filename}: {ex.strerror}')
 
 
-def parse_format_options(s: str, defaults: Optional[dict]) -> dict:
-    """
-    Parse `s` and update `defaults` with the parsed values.
+# def parse_format_options(s: str, defaults: Optional[dict]) -> dict:
+#     """
+#     Parse `s` and update `defaults` with the parsed values.
 
-    >>> parse_format_options(
-    ... defaults={'json': {'indent': 4, 'sort_keys': True}},
-    ... s='json.indent:2,json.sort_keys:False',
-    ... )
-    {'json': {'indent': 2, 'sort_keys': False}}
+#     >>> parse_format_options(
+#     ... defaults={'json': {'indent': 4, 'sort_keys': True}},
+#     ... s='json.indent:2,json.sort_keys:False',
+#     ... )
+#     {'json': {'indent': 2, 'sort_keys': False}}
 
-    """
-    value_map = {
-        'true': True,
-        'false': False,
-    }
-    options = deepcopy(defaults or {})
-    for option in s.split(','):
-        try:
-            path, value = option.lower().split(':')
-            section, key = path.split('.')
-        except ValueError:
-            raise argparse.ArgumentTypeError(f'invalid option {option!r}')
+#     """
+#     value_map = {
+#         'true': True,
+#         'false': False,
+#     }
+#     options = deepcopy(defaults or {})
+#     for option in s.split(','):
+#         try:
+#             path, value = option.lower().split(':')
+#             section, key = path.split('.')
+#         except ValueError:
+#             raise argparse.ArgumentTypeError(f'invalid option {option!r}')
 
-        if value in value_map:
-            parsed_value = value_map[value]
-        else:
-            if value.isnumeric():
-                parsed_value = int(value)
-            else:
-                parsed_value = value
+#         if value in value_map:
+#             parsed_value = value_map[value]
+#         else:
+#             if value.isnumeric():
+#                 parsed_value = int(value)
+#             else:
+#                 parsed_value = value
 
-        if defaults is None:
-            options.setdefault(section, {})
-        else:
-            try:
-                default_value = defaults[section][key]
-            except KeyError:
-                raise argparse.ArgumentTypeError(
-                    f'invalid key {path!r}')
+#         if defaults is None:
+#             options.setdefault(section, {})
+#         else:
+#             try:
+#                 default_value = defaults[section][key]
+#             except KeyError:
+#                 raise argparse.ArgumentTypeError(
+#                     f'invalid key {path!r}')
 
-            default_type, parsed_type = type(default_value), type(parsed_value)
-            if parsed_type is not default_type:
-                raise argparse.ArgumentTypeError(
-                    'invalid value'
-                    f' {value!r} in {option!r}'
-                    f' (expected {default_type.__name__}'
-                    f' got {parsed_type.__name__})'
-                )
+#             default_type, parsed_type = type(default_value), type(parsed_value)
+#             if parsed_type is not default_type:
+#                 raise argparse.ArgumentTypeError(
+#                     'invalid value'
+#                     f' {value!r} in {option!r}'
+#                     f' (expected {default_type.__name__}'
+#                     f' got {parsed_type.__name__})'
+#                 )
 
-        options[section][key] = parsed_value
+#         options[section][key] = parsed_value
 
-    return options
-
-
-PARSED_DEFAULT_FORMAT_OPTIONS = parse_format_options(
-    s=','.join(DEFAULT_FORMAT_OPTIONS),
-    defaults=None,
-)
-
+#     return options
 
 def response_charset_type(encoding: str) -> str:
     try:
@@ -273,3 +266,66 @@ def response_mime_type(mime_type: str) -> str:
         raise argparse.ArgumentTypeError(
             f'{mime_type!r} doesn’t look like a mime type; use type/subtype')
     return mime_type
+
+#Refactored functions
+def _parse_option_token(option: str) -> Tuple[str, str, str, str]:
+    try:
+        path, value = option.lower().split(':')
+        section, key = path.split('.')
+    except ValueError:
+        raise argparse.ArgumentTypeError(f'invalid option {option!r}')
+    return section, key, value, path
+
+def _coerce_value(value: str) -> Union[bool, int, str]:
+    if value in {'true', 'false'}:
+        return value == 'true'
+    if value.isnumeric():
+        return int(value)
+    return value
+
+def _ensure_defaults_shape(
+    options: dict,
+    defaults: Optional[dict],
+    section: str,
+    key: str,
+    parsed_value: Union[bool, int, str],
+    *,
+    option_text: str,
+    raw_value: str,
+    path: str,
+) -> None:
+    if defaults is None:
+        options.setdefault(section, {})
+        return
+
+    try:
+        default_value = defaults[section][key]
+    except KeyError:
+        raise argparse.ArgumentTypeError(f'invalid key {path!r}')
+
+    default_type, parsed_type = type(default_value), type(parsed_value)
+    if parsed_type is not default_type:
+        raise argparse.ArgumentTypeError(
+            'invalid value'
+            f' {raw_value!r} in {option_text!r}'
+            f' (expected {default_type.__name__}'
+            f' got {parsed_type.__name__})'
+        )
+
+
+def parse_format_options(s: str, defaults: Optional[dict]) -> dict:
+    options = deepcopy(defaults or {})
+    for option in s.split(','):
+        section, key, value, path = _parse_option_token(option)
+        parsed_value = _coerce_value(value)
+        _ensure_defaults_shape(
+            options, defaults, section, key, parsed_value,
+            option_text=option, raw_value=value, path=path,
+        )
+        options[section][key] = parsed_value
+    return options
+
+PARSED_DEFAULT_FORMAT_OPTIONS = parse_format_options(
+    s=','.join(DEFAULT_FORMAT_OPTIONS),
+    defaults=None,
+)
