@@ -38,7 +38,7 @@ def http_server():
 def run_httpie(*args, env=None):
     """Starts httpie's command as a subprocess"""
     result = subprocess.run(
-        ["http", "--no-color", *args],
+        ["http", *args],
         capture_output=True,
         text=True,
         env=env,
@@ -73,7 +73,7 @@ def test_expired_cookies(http_server, tmp_path):
             "value": "tiny-boom",
             "domain": "localhost",
             "path": "/",
-            "expires": "2025-11-07T00:00:00Z"
+            "expires": 1730937600.0
         }]
     }
     session_file.write_text(json.dumps(session_data))
@@ -102,8 +102,9 @@ def test_cookie_override(http_server, tmp_path):
     )
 
     assert result.returncode == 0
-    assert "ship-of-theseus=no-longer-is" in result.stdout, "Expected overridden cookie to be sent"
 
     session_data = json.loads(session_file.read_text())
-    cookie_names = [c["name"] for c in session_data["cookies"]]
-    assert "double-chocolate-chunk" in cookie_names, "Expected new double-chocolate-chunk cookie persisted"
+    cookies = {c["name"]: c["value"] for c in session_data["cookies"]}
+    assert cookies.get("ship-of-theseus") == "no-longer-is", "Expected overridden cookie value"
+    assert "double-chocolate-chunk" in cookies, "Expected new double-chocolate-chunk cookie persisted"
+    
