@@ -4,7 +4,11 @@
 
 Three new integration tests have been added, verifying logic interactions between `sessions.py`, the session handler, and `core.py`, the primary controller for HTTP functionality. `core.py` was the primary file we decided to test integrations with, since it effectively touches or is touched by most functional files in HTTPie. We then chose `sessions.py` because of the ease of testing persistence and our familiarity with the file from prior assignments.
 
-Minimal test data preparation was needed, as we are creating cookies during testing and verifying they exist in an HTTP server we generated. Our tests ran as expected, verifying that HTTPie handles servers, sessions, and cookies properly, meaning we also did not discover and defects.
+Minimal test data preparation was needed, as we are creating cookies during testing and verifying they exist in an HTTP server we generated. Our tests ran as expected, verifying that HTTPie handles servers, sessions, and cookies properly, but only on certain machines. We found that potential mismatches between http or HTTPie versions can cause a catastrophic testing failure due to deprecated response methods. In older versions of this codebase, `core.py` expected responses to contain a sequence or tuple of bytes as a first argument, whereas newer versions accept strings. While this is not a defect of the current codebase, this does suggest that legacy systems and users will have to undergo refactors for request and response logic when updating to newer HTTPie versions.
+
+## Test Results
+
+![integration test results](integration_test_results.png)
 
 ## test_sessions_integration.py
 
