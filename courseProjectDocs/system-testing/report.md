@@ -2,7 +2,7 @@
 
 ## Summary
 
-Three new system tests have been added, 
+Three new system tests have been added, encompassing black box testing for three core functionality loops a user may engage with when using HHTPie from the CLI. These tests cover standard logic when engaging in a get request, exception handling when attempting to visit an invalid or unreachable URL, and the authorization process. We felt that these three logic loops are some of the most important when testing with HTTPie and wanted to focus on functionality that would serve developers first. We noted no exceptions when testing and our expected results matched actual outcomes with perfect accuracy, indicating HTTPie is operating as expected during core usage loops.
 
 ## Test Results
 
