@@ -1,0 +1,113 @@
+{
+    "machine_info": {
+        "node": "Vinaykas-MacBook-Air-2.local",
+        "processor": "arm",
+        "machine": "arm64",
+        "python_compiler": "Clang 17.0.0 (clang-1700.0.13.3)",
+        "python_implementation": "CPython",
+        "python_implementation_version": "3.13.7",
+        "python_version": "3.13.7",
+        "python_build": [
+            "main",
+            "Aug 14 2025 11:12:11"
+        ],
+        "release": "24.6.0",
+        "system": "Darwin",
+        "cpu": {
+            "python_version": "3.13.7.final.0 (64 bit)",
+            "cpuinfo_version": [
+                9,
+                0,
+                0
+            ],
+            "cpuinfo_version_string": "9.0.0",
+            "arch": "ARM_8",
+            "bits": 64,
+            "count": 8,
+            "arch_string_raw": "arm64",
+            "brand_raw": "Apple M1"
+        }
+    },
+    "commit_info": {
+        "id": "3f86eaf4397c0fb4182b22f33041e574091c95c1",
+        "time": "2025-11-23T11:35:43-05:00",
+        "author_time": "2025-11-23T11:35:43-05:00",
+        "dirty": false,
+        "project": "cli-swen777",
+        "branch": "vin-dev"
+    },
+    "benchmarks": [
+        {
+            "group": "httpie-cli-get",
+            "name": "test_httpie_get_root_benchmark",
+            "fullname": "tests/test_performance_httpie.py::test_httpie_get_root_benchmark",
+            "params": null,
+            "param": null,
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 1.0,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 0.4568509589880705,
+                "max": 0.5743830419960432,
+                "mean": 0.5119203500100411,
+                "stddev": 0.04293684069838161,
+                "rounds": 5,
+                "median": 0.5135369159979746,
+                "iqr": 0.05051283298234921,
+                "q1": 0.48420939603238367,
+                "q3": 0.5347222290147329,
+                "iqr_outliers": 0,
+                "stddev_outliers": 2,
+                "outliers": "2;0",
+                "ld15iqr": 0.4568509589880705,
+                "hd15iqr": 0.5743830419960432,
+                "ops": 1.9534288878736414,
+                "total": 2.5596017500502057,
+                "iterations": 1
+            }
+        },
+        {
+            "group": "httpie-cli-get-json",
+            "name": "test_httpie_get_json_benchmark",
+            "fullname": "tests/test_performance_httpie.py::test_httpie_get_json_benchmark",
+            "params": null,
+            "param": null,
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 1.0,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 0.4307809160090983,
+                "max": 0.4523340839659795,
+                "mean": 0.443055933190044,
+                "stddev": 0.010239846676999296,
+                "rounds": 5,
+                "median": 0.44916554098017514,
+                "iqr": 0.01795994870190043,
+                "q1": 0.4325340725190472,
+                "q3": 0.4504940212209476,
+                "iqr_outliers": 0,
+                "stddev_outliers": 1,
+                "outliers": "1;0",
+                "ld15iqr": 0.4307809160090983,
+                "hd15iqr": 0.4523340839659795,
+                "ops": 2.2570513677582573,
+                "total": 2.21527966595022,
+                "iterations": 1
+            }
+        }
+    ],
+    "datetime": "2025-12-01T01:49:51.198555+00:00",
+    "version": "5.2.3"
+}
