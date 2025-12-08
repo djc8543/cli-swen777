@@ -35,11 +35,33 @@ It is important to note that this value represents total system CPU usage, not j
 
 #### Test Scope and Design
 
+The purpose of this load test is to evaluate how the HTTPie CLI performs under edge case levels of traffic, ranging from gradual increases over time to sudden spikes in requests. To perform this test, we start a basic python server and start the three tests found in `tests/stess_tests_volatile/stress.sh`, with each simulating a different stress environment. Locust and aiohttp were leveraged for testing, with performance being monitored through task manager and general feel of the OS during simulations.
+
 #### Configuration
+
+- Start virtual environment
+- pip install aiohttp locust httpie
+- Comment or uncomment tests as needed in `tests/stess_tests_volatile/stress.sh`
+- ./tests/stress_tests_volatile/stress.sh
+The script will begin (and eventually close) all servers required and run any tests, with outputs being piped to the terminal.
 
 #### Results
 
+![Stress test cpu spike](stress_cpu_spike.png)
+
+![Stress test ram spike](stress_ram_spike.png)
+
+![Stress test concurrency success](stress_concurrency.png)
+
 #### Performance Findings
+
+1. Flooding HTTPie with 10000 requests in quick succession caused notable performance degredation, including a system crash during one trial. This crash was not replicated across 3 other trials however. All requests, outside of the crashed trial, were properly received and responded to.
+
+2. Spiking HTTPie with 5000 simultaneous requests caused no notable performance degredation or any lasting complications, but resulted in large failures on numerous threads (upwards of 30%). Many threads were turned away, indicating that HTTPie is not a sufficient tool for testing large sites under heavy load, such as shops during cyber Monday.
+
+3. Simulating a rampup of 125 new user connections per second, up to 500, for 30 seconds total, was moderately successful, with only 6 requests failing by the end of the process. Performance degredation was particularly heavy during this process, maxing out 32gb of RAM and spiking CPU usage to ~90%, indicating either a flaw with HTTPie or with locust's spawning of users.
+
+Overall, HTTPie performed mostly as expected during stress testing, cementing itself as a testing and debugging tool for developers and not suitable for anything at scale. For testing simple endpoints or checking for race conditions across <10 users, this is a great tool. Anything beyond those types of use cases will result in failures that may be incorrectly attributed to source code, rather than cli testing.
 
 # Spike Testing
 
@@ -89,4 +111,4 @@ When looking at the CPU graph we see a much larger spike before dropping back do
 | -------- | ---------------------------------------------------- | ----- |
 | Vinayaka | Performed the Load Testing, added notes to document | None  |
 | Chris    | Performed the Spike Testing, added notes to document | None  |
-| Dan      | Performed the XXXXX Testing, added notes to document | None  |
+| Dan      | Performed the Stress Testing, added notes to document | None  |
