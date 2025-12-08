@@ -1,3 +1,6 @@
+# NOTE
+This document was created prior to the performance testing assignment updates and contains outdated and incomplete information. Please see `performance.md` for the full performance testing information and analysis
+
 # Performance Testing
 
 For performance testing, we used pytest-benchmark, a Python benchmarking tool that integrates with pytest. We focused on the core user flow of HTTPie, running a command like - `http GET URL`. This is the most comman way real users interact with HTTPie. To test this we measuered two scenarios: 
